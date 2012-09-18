@@ -1,0 +1,205 @@
+This is a listing and perhaps outline of a wide breadth of CS topics which may
+come up in an interview.
+
+Most current version:
+Wed Mar 21 11:01:36 EDT 2012
+
+DATA STRUCTURES
+
+Master table for time complexity of various data structures:
+			Linked List	Array	Dynamic Array	Balanced Tree
+
+Indexing		O(n)		O(1)	O(1)		O(log n)
+Insert/del at start	O(1)		N/A	O(n)		O(log n)
+Insert/del at end	O(1)		N/A	O(1) [amrtz]	O(log n)
+Insert/del in middle	O(1)+search	N/A	O(n)		O(log n)
+Wasted space (avg)	O(n)		0	O(n)		O(n)
+
+
+
+Arrays
+An Array is one of the simplest ideas of a collection, perhaps even moreso than
+a List (depending on the language). It is a collection of elements identified by
+an index or key. Perhaps the most important concept to understand about arrays
+is their use in memory; on most modern computers memory is simply an array of
+words. Array elements are accessed through an offset from some base address.
+Element indices can be computed at runtime, allowing iterative statements to
+work on arrays of arbitrary size (a for loop that is bounded by "array.length").
+Because of this, all elements in an array must be of the same type, or more
+specifically, have the same size in memory/use the same data represenation.
+
+In most languages arrays are 0 indexed, meaning a[0] is the first element of the
+array a. Accessing the nth element is done like so: a[n-1] (because the first
+element is at a[0]). Arrays can be n dimensions, although usually no more than
+two. 2D arrays are accessed by simply including the column index after the row:
+a[row][column] (for row-major languages). In general, the memory location of the
+element with index i is given as: B + c * i, where B is the base address of the
+array and c is some fixed constant (the size in bytes of each element in the
+array).
+
+C arrays have row-major order, meaning each row is stored continguously in
+memory, row by row. So, the first row is stored, followed directly by the
+second, etc.
+
+Generally arrays are of fixed size when they are declared; only dynamic arrays
+allow resizing (adding arbitrary elements at runtime).
+
+Array access is constant time, and arrays take up linear (O(n)) space in the
+number of elements n they contain. Sequential iteration over an array is very
+fast because of locality of reference: arrays being layed out in contiguous
+memory results in fewer cache misses (this is also why memcpy in c exists).
+There is no overhead for storing elements (per-element) although there may be
+per-array overhead (for example, to store the bound of the array).
+
+Strings
+A string is a finite sequence of sumbols chosen from a particular set of symbols
+(the alphabet). Typically it is stored in memoery as a byte/word array which
+stores a sequence of elements, usually characters, using some encoding. The
+string datatype is often constrained to some maximum. Strings can be
+fixed-length, which have a maximum length and use the same amount of memory
+whether the max is reached, and variable-length strings, whose length is not
+arbitrarily fixed and use varying amounts of memory depending on their size.
+Most programming languages treat them as variable-length, with the length
+limited only by memory. Most strings are encoded with ASCII (or a similar
+encoding scheme), and are given 1 byte per character (256 characters possible).
+Strings can be mutable or immutable (able to be changed, such as C++/Ruby, or
+unable to be changed, such as Java/Python). In the latter case the string must
+be re-created to make changes.
+
+The length of the string might be stored implicitly by using a special
+terminating character (often NULL, such as in C).
+
+Dynamic Arrays
+A dynamic array is, essentially, a resizable array - an array that allows
+arbitrary insertion and deletion of elements. The simplest implementation splits
+a fixed array into two parts: the first is used for elements and is considered
+the "logical size" of the array. The second is used for adding elements, and is
+considered the array's "capacity." Resizing the array is expensive, usually
+requiring copying the entire array into a new, bigger one. To curtail this cost,
+the resize operation often results in a much larger amount (such as doubling its
+size). This is why insertion is constant time amortized: the resized capacities
+form a geometric progression, where the average time per insertion is
+approximately a/(a-1) and the wasted cells number is bounded above by (a-1)n
+[where a is the scale multiplier for each resize, e.g. 2 for doubling].
+
+Linked Lists
+Linked lists consists of nodes which represent a sequence. In its simplest form,
+each node consists of data and a reference/link to the "next" node in the
+sequence. Variants include the doubly linked list, in which each node also
+contains a pointer to the previous node in the sequence, and a circular linked
+list, in which the last node in the sequence points back to the first as opposed
+to some NULL or dummy value.
+
+Linked lists are powerful because insertion/deletion of elements is very easy,
+because no reallocation or reorganization of the entire structure is necessary.
+Sequential nodes do not need to be stored sequentially in memory. The
+disadvantage is that indexing is not easy, meaning that finding an arbitrary
+element often involves scanning the entire list.
+
+Stacks
+A stack is a data structure enforcing a Last In, First Out (LIFO) property:
+elements which are most recently inserted are also the first ones to be removed,
+just like any physical stack of objects. It is characterized by two operations:
+push, which puts an element at the top of the stack, and pop, which removes an
+element from the top of the stack. A stack can easily be implemented by a linked
+list, where one only adds/removes from one side of the list.
+
+Stacks have a number of interesting applications apart from the hardware stack
+(described elsewhere in this document). What follows are a few examples. The
+basic algorithm for calculating the binary version of a base 10 number results
+in a "backward" answer. If, instead of printing the digits out as we calculate
+them, we instead push them onto a stack, we can them pop them off and print
+them, and the answer will be in the correct order. Stacks are, of course, used
+for the LR/LALR parsing algorithms. They are useful for backtracking, for
+example when implementing "back" in a browser to navigate to previously visisted
+sites. Finally, stacks can be used to implement quicksort (for more info, see
+the section on quicksort).
+Queues
+
+
+Heaps
+A heap is a tree-based data structure satisfying the following "heap property:"
+if B is a child node of A, then key(A) >= key(B) for a max heap, and key(A) <=
+key(B) for a min heap. A heap is a maximally efficient implementation of a
+priority queue, and are used for graph algorithms and, obviously, heapsort.
+Heaps are usually implemented with an array, meaning pointers between elements
+are not required. For a binary heap (most common), this is done like so: the
+root element is stored at index 0. The next two elements are its children, the
+next four are those children's children, and so on. So, the children of a node
+at position n are located at 2n+1 and 2n+2 (for a 0 based array). Thus tree
+access is as simple as computing indices. To balance the heap, we simply swap
+elements which are out of order.
+
+
+
+Trees
+Graphs
+
+Hashes
+A hash table/map implements an associative array - one value (the key) is mapped
+to another. A hash function is used to determine the index for a particular key.
+It transforms the key into the index (hash) of an array element (slot/bucket)
+where the corresponding value is stored. Ideally a hash table would map every
+key to its own bucket, but this is unlikely in practice. Thus, hash tables are
+designed to work around hash collisions, where different keys map to the same
+hash value.
+
+The goal of the hash table is efficiency: one can achieve near constant time for
+lookups/inserts/etc by using a good hash function and a strong collision
+reduction method. More specifically, these operations will NOT depend on the
+number of elements actually stored in the table.
+
+LOW LEVEL
+Bit Manipulation
+Used for low-level programming tasks including error detection/correction
+algorithms, data compression, encryption algorithms, and optimization. Source
+code doing bit manipulation uses bitwise operations: AND, OR, XOR, NOT, and bit
+shifting. These operations are obvious, but XOR deserves some expansion. It
+means, "one or the other but not both." In other words, it returns 1/true only
+if its arguments are not the same. It can be used to determine if bits are
+unequal, as a bit-flipper (input can choose whether to flip bits), and to show
+if there is an odd number of 1 bits (it will be true iff there are an odd number
+of 1 bits in an XOR chain). XORing a bit with itself produces zero, which can be
+more efficient than loading and storing a zero value. Also, in-place swap of two
+values without a temporary variable can be done as follows:
+swap(x,y):
+x := x XOR y
+y := y XOR x
+x := x XOR y
+
+Logical Gates
+Number Representation
+Machine Architecture (basics)
+System Design, Memory Limits
+
+PROGRAMMING LANGUAGES
+Imperative vs. Functional
+Compiler Stages
+Basic Theory
+
+PROGRAMMING CONCEPTS
+Recursion
+Object Oriented Design
+
+ALGORITHMS
+Searching
+Sorting
+
+TESTING
+Basics
+
+DATABASES
+Basic SQL
+Schemas
+Join
+
+NETWORKING
+Layers
+
+OPERATING SYSTEMS
+Processes
+Threads
+Locks
+
+MISCELLANEOUS
+Probability Theory
